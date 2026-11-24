@@ -1,0 +1,29 @@
+{
+  "repos": {
+    "home-assistant-thermex": {
+      "stars": 10,
+      "downloads": 947,
+      "pushed_at": "2026-11-24T18:53:05Z"
+    },
+    "home-assistant-forsyningonline": {
+      "stars": 0,
+      "downloads": 4,
+      "pushed_at": "2026-11-23T17:29:11Z"
+    },
+    "useful-blueprints": {
+      "stars": 0,
+      "downloads": 0,
+      "pushed_at": "2026-11-24T14:27:14Z"
+    },
+    "kvittering-app": {
+      "stars": 0,
+      "downloads": 0,
+      "pushed_at": "2025-08-08T08:23:18Z"
+    },
+    "cornhone-useful": {
+      "stars": 1,
+      "downloads": 0,
+      "pushed_at": "2026-11-24T14:27:18Z"
+    }
+  }
+}
