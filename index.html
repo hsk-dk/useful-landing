@@ -331,14 +331,24 @@ footer{background:var(--blue-night);color:rgba(255,255,255,.78);padding:56px cla
   },{threshold:.12});
   document.querySelectorAll('.reveal').forEach(function(el,i){el.style.transitionDelay=(i%3)*90+'ms';io.observe(el)});
 
-  // progressive enhancement: live stars + last update from GitHub (silently skipped if unavailable)
+  // Stars, release downloads and last push come from stats.json (written daily by .github/workflows/stats.yml),
+  // so the page makes no calls to GitHub. If the file is missing the cards simply show no numbers.
   var ago=function(d){var days=Math.round((Date.now()-new Date(d))/864e5);return days<1?'i dag':days===1?'i går':days<60?days+' dage siden':Math.round(days/30)+' mdr. siden'};
-  cards.forEach(function(c){
-    fetch('https://api.github.com/repos/hsk-dk/'+c.dataset.repo).then(function(r){return r.ok?r.json():null}).then(function(j){
-      if(!j)return;
-      c.querySelector('.stat').textContent=(j.stargazers_count?'★ '+j.stargazers_count+' · ':'')+'opdateret '+ago(j.pushed_at);
-    }).catch(function(){});
-  });
+  var cards=document.querySelectorAll('.card');
+  var nf=new Intl.NumberFormat('da-DK');
+  fetch('stats.json').then(function(r){return r.ok?r.json():null}).then(function(j){
+    if(!j||!j.repos)return;
+    cards.forEach(function(c){
+      var s=j.repos[c.dataset.repo], el=c.querySelector('.stat');
+      if(!s||!el)return;
+      var parts=[];
+      if(s.stars>0)parts.push('\u2605 '+nf.format(s.stars));
+      if(s.downloads>0)parts.push('\u2B07 '+nf.format(s.downloads));
+      if(s.pushed_at)parts.push('opdateret '+ago(s.pushed_at));
+      el.textContent=parts.join(' \u00B7 ');
+      if(s.stars>0||s.downloads>0)el.title=(s.stars>0?nf.format(s.stars)+' stjerner på GitHub':'')+(s.stars>0&&s.downloads>0?', ':'')+(s.downloads>0?nf.format(s.downloads)+' downloads af release-filer':'');
+    });
+  }).catch(function(){});
 })();
 </script>
 </body>
